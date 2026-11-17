@@ -69,6 +69,12 @@
       li.innerHTML = `<button><span class="no">${ch.no}</span><span class="name">${ch.name}</span>${
         now ? '<span class="mark now">読書中</span>' : done ? '<span class="mark">既読</span>' : ''}</button>`;
       li.firstChild.onclick = () => startAt(i, 0, 0, true);
+      if (i === 0 || DATA.chapters[i - 1].part !== ch.part) {
+        const h = document.createElement('li');
+        h.className = 'part-head';
+        h.textContent = DATA.parts[ch.part];
+        ol.appendChild(h);
+      }
       ol.appendChild(li);
     });
   }
@@ -229,9 +235,12 @@
     // 章の終わり
     if (!state.read.includes(cur.c)) state.read.push(cur.c);
     const last = cur.c + 1 >= DATA.chapters.length;
+    const partEnd = last || DATA.chapters[cur.c + 1].part !== DATA.chapters[cur.c].part;
     state.pos = last ? null : { c: cur.c + 1, s: 0, l: 0 };
     persist();
-    $('.ec-title').textContent = last ? '第1部「春」　完' : `${DATA.chapters[cur.c].no}　おわり`;
+    const partName = DATA.parts[DATA.chapters[cur.c].part].replace(/^中学1年編\s*/, '');
+    $('.ec-title').textContent = last ? `${partName}　完　／　中学1年編　完` : partEnd ? `${partName}　完` : `${DATA.chapters[cur.c].no}　おわり`;
+    $('#btn-next-ch').textContent = partEnd && !last ? '次の部へ' : '次の章へ';
     $('#btn-next-ch').style.display = last ? 'none' : '';
     $('#end-card').classList.add('show');
   }
@@ -288,8 +297,13 @@
   // ---------- 起動 ----------
   applySettings();
   bind();
-  fetch('part1.json').then(r => r.json()).then(d => {
-    DATA = d;
+  const FILES = ['part1.json', 'part2.json', 'part3.json'];
+  Promise.all(FILES.map(f => fetch(f).then(r => r.json()))).then(list => {
+    DATA = { parts: [], chapters: [] };
+    list.forEach((d, p) => {
+      DATA.parts.push(d.part);
+      d.chapters.forEach(ch => { ch.part = p; DATA.chapters.push(ch); });
+    });
     show('title');
   }).catch(() => {
     $('.title-sub').textContent = '本文データを読み込めませんでした';
