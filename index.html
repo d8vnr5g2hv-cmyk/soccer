@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#101a33">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LIBRE">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<title>LIBRE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- タイトル -->
+  <section id="v-title" class="view active">
+    <img class="title-art" src="cg_backtoback.webp" alt="">
+    <div class="title-shade"></div>
+    <div class="title-body">
+      <div class="title-logo">LIBRE</div>
+      <div class="title-sub">中学1年編　第1部「春」</div>
+      <div class="title-menu">
+        <button data-act="start">はじめから</button>
+        <button data-act="continue" id="btn-continue">つづきから</button>
+        <button data-act="chapters">章をえらぶ</button>
+        <button data-act="gallery">ギャラリー</button>
+        <button data-act="settings" class="ghost">設定</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 章選択 -->
+  <section id="v-chapters" class="view page">
+    <header class="page-head"><button class="back" data-act="title">‹</button><h2>章をえらぶ</h2></header>
+    <ol id="chapter-list" class="chapter-list"></ol>
+  </section>
+
+  <!-- ギャラリー -->
+  <section id="v-gallery" class="view page">
+    <header class="page-head"><button class="back" data-act="title">‹</button><h2>ギャラリー</h2><span id="gallery-count" class="count"></span></header>
+    <div id="gallery-grid" class="gallery-grid"></div>
+  </section>
+
+  <!-- 設定 -->
+  <section id="v-settings" class="view page">
+    <header class="page-head"><button class="back" data-act="back-settings">‹</button><h2>設定</h2></header>
+    <div class="settings">
+      <div class="set-row"><span>文字の大きさ</span>
+        <div class="seg" data-key="size"><button data-v="s">小</button><button data-v="m">中</button><button data-v="l">大</button></div></div>
+      <div class="set-row"><span>文字送りの速さ</span>
+        <div class="seg" data-key="speed"><button data-v="slow">ゆっくり</button><button data-v="normal">ふつう</button><button data-v="fast">はやい</button><button data-v="instant">一瞬</button></div></div>
+      <div class="set-row"><span>立ち絵</span>
+        <div class="seg" data-key="chara"><button data-v="on">表示</button><button data-v="off">非表示</button></div></div>
+      <div class="set-row danger"><span>記録を消す</span><button id="btn-reset" class="small">リセット</button></div>
+    </div>
+  </section>
+
+  <!-- 読む画面 -->
+  <section id="v-read" class="view">
+    <div id="stage">
+      <div class="bg-layer"><img id="bg-a" alt=""><img id="bg-b" alt=""></div>
+      <div id="chara-layer"></div>
+      <div id="cg-layer"><img id="cg-img" alt=""></div>
+    </div>
+    <div id="chapter-card"><div class="cc-no"></div><div class="cc-name"></div></div>
+    <div id="read-ui">
+      <div class="top-bar">
+        <span id="read-chapter"></span>
+        <div class="top-btns">
+          <button id="btn-hide" aria-label="文字を隠す">◐</button>
+          <button id="btn-log" aria-label="ログ">≡</button>
+          <button id="btn-menu" aria-label="メニュー">⋯</button>
+        </div>
+      </div>
+      <div id="textbox"><div id="text"></div><div id="next-mark">▼</div></div>
+    </div>
+    <div id="end-card">
+      <div class="ec-title"></div>
+      <div class="ec-btns">
+        <button id="btn-next-ch">次の章へ</button>
+        <button class="ghost" data-act="chapters">章をえらぶ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ログ -->
+  <div id="log" class="sheet"><div class="sheet-head"><span>ログ</span><button class="close" data-close="log">×</button></div><div id="log-body"></div></div>
+
+  <!-- メニュー -->
+  <div id="menu" class="sheet small-sheet"><div class="sheet-head"><span>メニュー</span><button class="close" data-close="menu">×</button></div>
+    <div class="menu-list">
+      <button data-act="chapters">章をえらぶ</button>
+      <button data-act="gallery">ギャラリー</button>
+      <button data-act="settings-from-read">設定</button>
+      <button data-act="title" class="ghost">タイトルへ</button>
+    </div>
+  </div>
+
+  <!-- 一枚絵ビューア -->
+  <div id="viewer"><img id="viewer-img" alt=""></div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
