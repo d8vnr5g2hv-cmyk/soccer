@@ -302,7 +302,7 @@
   // ---------- 起動 ----------
   applySettings();
   bind();
-  const FILES = ['part1.json', 'part2.json', 'part3.json', 'part4.json', 'part5.json', 'part6.json'];
+  const FILES = ['part1.json', 'part2.json', 'part3.json', 'part4.json', 'part5.json', 'part6.json', 'part7.json', 'part8.json', 'part9.json'];
   Promise.all(FILES.map(f => fetch(f).then(r => r.json()))).then(list => {
     DATA = { parts: [], chapters: [] };
     list.forEach((d, p) => {
