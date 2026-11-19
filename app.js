@@ -25,7 +25,8 @@
     yohei: ['耀平', '金井'], mia: ['美愛', '白峰'], minato: ['湊', '柊'], hayate: ['颯', '日向'],
     koharu: ['小春'], genichiro: ['じいちゃん', '源一郎', '老人'], okochi: ['大河内'], saeki: ['佐伯'],
     kurose: ['黒瀬'], ren: ['鷹宮', '蓮'], kiryu: ['桐生'], lucia: ['ルシア'], diego: ['ディエゴ'],
-    yuzuha: ['柚葉', '桜庭'], amagi: ['天城'], kujo: ['九条'], carmen: ['カルメン'], mizuno: ['水野'], nagao: ['長尾']
+    yuzuha: ['柚葉', '桜庭'], amagi: ['天城'], kujo: ['九条'], carmen: ['カルメン'], mizuno: ['水野'], nagao: ['長尾'],
+    kuga: ['久我'], kazama: ['風間'], asahina: ['朝比奈'], asakura: ['朝倉'], shishido: ['獅子堂'], tojo: ['東條'], kamiya: ['神谷'], mateo: ['マテオ'], kaio: ['カイオ']
   };
   const who = file => file.split('_')[0];
 
@@ -240,10 +241,10 @@
     state.pos = last ? null : { c: cur.c + 1, s: 0, l: 0 };
     persist();
     const fullName = DATA.parts[DATA.chapters[cur.c].part];
-    const hen = (fullName.match(/^中学\d年編/) || [''])[0];
-    const partName = fullName.replace(/^中学\d年編\s*/, '');
-    const nextHen = last ? '' : (DATA.parts[DATA.chapters[cur.c + 1].part].match(/^中学\d年編/) || [''])[0];
-    const henEnd = partEnd && hen && hen !== nextHen;
+    const hen = (fullName.match(/^(中学|高校)\d年編/) || [''])[0];
+    const partName = fullName.replace(/^(中学|高校)\d年編\s*/, '');
+    const nextHen = last ? '' : (DATA.parts[DATA.chapters[cur.c + 1].part].match(/^(中学|高校)\d年編/) || [''])[0];
+    const henEnd = partEnd && hen && !last && hen !== nextHen;
     $('.ec-title').textContent = henEnd ? `${partName}　完　／　${hen}　完` : partEnd ? `${partName}　完` : `${DATA.chapters[cur.c].no}　おわり`;
     $('#btn-next-ch').textContent = partEnd && !last ? '次の部へ' : '次の章へ';
     $('#btn-next-ch').style.display = last ? 'none' : '';
@@ -302,7 +303,7 @@
   // ---------- 起動 ----------
   applySettings();
   bind();
-  const FILES = ['part1.json', 'part2.json', 'part3.json', 'part4.json', 'part5.json', 'part6.json', 'part7.json', 'part8.json', 'part9.json'];
+  const FILES = ['part1.json', 'part2.json', 'part3.json', 'part4.json', 'part5.json', 'part6.json', 'part7.json', 'part8.json', 'part9.json', 'part10.json', 'part11.json'];
   Promise.all(FILES.map(f => fetch(f).then(r => r.json()))).then(list => {
     DATA = { parts: [], chapters: [] };
     list.forEach((d, p) => {
